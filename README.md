@@ -50,15 +50,14 @@ Ad evitare che un textarea sia modificabile prima dell'attivazione di CKeditor (
 <textarea class="editor" id="textarea1" data-enable="editor" disabled></textarea>
 ```
 
-All'attivazione di CKEditor, il campo verrò automaticamente abilitato.
+All'attivazione di CKEditor, il campo verrà automaticamente abilitato.
 
 Oltre che sui textarea, questo metodo può essere applicato ad ogni elemento che necessiti di essere abilitato in questo modo.
 
 In aggiunta, se l'elemento in esame è all'interno di un `div.form-group`, l'eventuale classe `disabled` presente, viene eliminata.
 
 
-Per info sulla configurazione degli script server-side, il css richiesto ecc, consulta i commenti all'interno dei vari file di [test](https://github.com/massimo-cassandro/m-utilities/tree/master/ckeditor/test).
-
+Per altre info, vedi gli esempi nella dir `test`.
 
 
 ## Altre funzionalità del loader
