@@ -8,6 +8,7 @@
   "scripts": {
     "UPD-version": "npx update-version",
     "upd @m": "npm update @massimo-cassandro/linters-config @massimo-cassandro/dev-utilities",
+    "npm-publish": "npm publish",
     "local test server": "python3 -m http.server"
   },
   "browserslist": [
