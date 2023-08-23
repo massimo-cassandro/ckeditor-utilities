@@ -114,7 +114,8 @@ import {ckeditor_loader, ckeditor_form_check} from '@massimo-cassandro/ckeditor-
     img_viewer: 'path/to/viewer/',
     link_auto_ext_target_blank: true,
     link_download: true,
-    link_target_blank: true
+    link_target_blank: true,
+    extra_cleaning: true // abilita la pulizia del markup
   });
 
   ckeditor_form_check({

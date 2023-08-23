@@ -1,7 +1,7 @@
 {
   "name": "@massimo-cassandro/ckeditor-utilities",
   "description": "CKEditor 5 custom builds & utilities",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "license": "MIT",
   "author": "Massimo Cassandro",
   "main": "index.js",

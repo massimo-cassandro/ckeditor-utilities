@@ -53,8 +53,8 @@ export default function (options) {
 
           cke_data = cke_data
             .trim()
-            .replace(/<p( (.*?))?>(\s|&nbsp;)<\/p>/igm, '') // righe vuote
-            // .replace(/((\s|&nbsp;)+<\/p>)$/igm, '</p>') // spazi vuoti alla fine dei tag p
+            .replace(/<p( (.*?))?>\s*(?:<br ?\/?>)*\s*(?:&nbsp;)*\s*(?:<br ?\/?>)*\s*<\/p>/igm, '') // righe vuote
+            .replace(/\s*(?:<br ?\/?>)*\s*(?:&nbsp;)*\s*(?:<br ?\/?>)*\s*<\/p>/igm, '</p>') // spazi vuoti alla fine dei tag p
             .replace(/(<h\d>)<strong>(.*?)<\/strong>(<\/h\d>) /igm, '$1$2$3'); // strong dentro gli header
 
           // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-setData
