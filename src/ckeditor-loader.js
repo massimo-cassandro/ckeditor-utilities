@@ -19,6 +19,7 @@ export default function (loader_options) {
     // abilita una pulizia molto accentuata del codice generato
     // (eseguita dal modulo form-check)
     extra_cleaning: false
+
   };
 
   let cke_opts = Object.assign({}, default_options, loader_options || {});

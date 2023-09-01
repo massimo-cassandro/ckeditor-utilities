@@ -8,6 +8,8 @@
  * NB: i percorsi dei moduli sono relativi alla cartella node_modules
  */
 
+//TODO fix imageStyle:full warning
+
 // The editor creator to use.
 import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
