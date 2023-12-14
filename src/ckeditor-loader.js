@@ -172,7 +172,7 @@ export default function (loader_options) {
 
         if(item.classList.contains('editor-no-headings')) {
           options.toolbar = options.toolbar.filter(item => item !== 'heading');
-          options.removePlugins = options.removePlugins.concat(headings_plugins);
+          options.removePlugins = (options.removePlugins??[]).concat(headings_plugins);
         }
 
         // rimozione eventuali separatori all'inizio e alla fine
