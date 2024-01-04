@@ -1,263 +1,79 @@
 /* globals ClassicEditor */
 
-/*
-  FILE DA INCLUDERE per l'utilizzo di ckeditor
-*/
+import { create_custom_editor_options } from './js/create-custom-editor-options.js';
+import { instance_setup } from './js/istance-setup.js';
 
 export default function (loader_options) {
 
   const default_options = {
-    selector: 'editor',
-    cke_url: '/assets/ckeditor-dist/m-ckeditor-min.js',
+
+    // selettori css e relativi file ckeditor da caricare. Gli script ckeditor sono esclusivi.
+    // Se è necessario usare editor con diverse configurazioni nella stessa pagina, usare sempre il custom
+    // selettore => path file ckeditor da caricare
+    selectors: {
+      'editor-std': '/libs/ckeditor-std.js',
+      'editor-full': '/libs/ckeditor-full.js',
+      'editor-custom': '/libs/ckeditor-custom-min.js' // custom
+    },
+
     upl_url: '/ckeditor/file-uploader',
     img_viewer: '/viewer/',  // (visualizzaione dei file da db, NB: con slash finale)
 
     link_auto_ext_target_blank: false,
     link_download: false,
-    link_target_blank: false,
-
-    // abilita una pulizia molto accentuata del codice generato
-    // (eseguita dal modulo form-check)
-    extra_cleaning: false
-
+    link_target_blank: false
   };
 
   let cke_opts = Object.assign({}, default_options, loader_options || {});
 
-  const editor_list = document.querySelectorAll(`textarea.${cke_opts.selector}`);
+  const editors_list = document.querySelectorAll(Object.keys(cke_opts.selectors).map(i => `textarea.${i}`).join(', '));
 
-  if (editor_list.length) {
+  if (editors_list.length) {
 
     // Istanza ckeditor.
-    // L'istanza è raggiungibile tramite il suo id (se esiste)
-    // o, in sua mancanza, tramite l'indice dell'elemento
+    // L'istanza è raggiungibile tramite il suo id (se non esiste viene assegnato un id univoco)
     // es: ckeditor_instances.__textarea_id__
     window.ckeditor_instances = {};
+    let editor_create_options = {};
+    let isCustomEditor = false;
+    let cke_url;
 
-    const std_toolbar = [
-        'heading',
-        '|',
-        'bold',
-        'italic',
-        'link',
-        '|',
-        'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify',
-        '|',
-        'outdent', 'indent',
-        '|',
-        'bulletedList',
-        'numberedList',
-        '|',
-        'imageUpload',
-        'blockQuote',
-        'insertTable',
-        'undo',
-        'redo'
-      ],
+    if(document.querySelectorAll('.editor-std').length) {
+      cke_url = cke_opts.selectors['editor-std'];
 
-      lite_toolbar = [
-        'heading',
-        '|',
-        'bold',
-        'italic',
-        'link',
-        '|',
-        'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify',
-        '|',
-        'outdent', 'indent',
-        '|',
-        'bulletedList',
-        'numberedList',
-        '|',
-        //'imageUpload',
-        'blockQuote',
-        'insertTable',
-        'undo',
-        'redo'
-      ],
+    } else if(document.querySelectorAll('.editor-full').length) {
+      cke_url = cke_opts.selectors['editor-full'];
 
-      xlite_toolbar = [
-        'heading',
-        '|',
-        'bold',
-        'italic',
-        'link',
-        '|',
-        'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify',
-        '|',
-        'outdent', 'indent',
-        '|',
-        'bulletedList',
-        'numberedList',
-        '|',
-        //'imageUpload',
-        'blockQuote',
-        //'insertTable',
-        'undo',
-        'redo'
-      ],
+    } else {
+      cke_url = cke_opts.selectors['editor-custom'];
+      isCustomEditor = true;
+    }
 
-      xxlite_toolbar = [
-        // 'heading',
-        // '|',
-        'bold',
-        'italic',
-        'link',
-        '|',
-        'alignment:left', 'alignment:center', 'alignment:right',
-        // '|',
-        // 'outdent', 'indent',
-        // '|',
-        // 'bulletedList',
-        // 'numberedList',
-        '|',
-        // 'imageUpload',
-        // 'blockQuote',
-        // 'insertTable',
-        'undo',
-        'redo'
-      ],
+    const script = document.createElement('script');
+    script.onload = function() {
 
-      xxxlite_toolbar = [
-        'bold',
-        'italic',
-        'link'
-      ],
+      editors_list.forEach( dom_element => {
 
-      img_plugins = ['mUploadAdapter', 'ImageUpload', 'Image', 'ImageToolbar', 'ImageStyle', 'ImageUpload', 'ImageCaption', 'ImageResize'],
-      table_plugins = ['insertTable', 'Table', 'TableToolbar', 'TableProperties', 'TableCellProperties'],
-      headings_plugins = ['Heading'];
-
-    let script = document.createElement('script');
-    script.onload =  () => {
-
-      editor_list.forEach(function (item, idx) {
-
-        let options = {
-          uploaderUrl: cke_opts.upl_url,
-          uploadMaxSize : 4 * 1024 * 1024,
-          imgViewer: cke_opts.img_viewer,
-          toolbar: std_toolbar
-        };
-
-        // max size da attributo data
-        if(item.dataset.ckeUplMaxSize) { // in bytes
-          options.uploadMaxSize = item.dataset.ckeUplMaxSize;
+        if(isCustomEditor) {
+          editor_create_options = create_custom_editor_options(dom_element, cke_opts);
         }
-
-        // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html#removing-features
-        if (item.classList.contains('editor-lite')) {
-          options = {
-            toolbar: lite_toolbar,
-            removePlugins: img_plugins,
-          };
-        } else if(item.classList.contains('editor-xlite')) {
-          options = {
-            toolbar: xlite_toolbar,
-            removePlugins: img_plugins.concat(table_plugins),
-          };
-        } else if(item.classList.contains('editor-xxlite')) {
-          options = {
-            toolbar: xxlite_toolbar,
-            removePlugins: img_plugins.concat(table_plugins, headings_plugins,
-              ['BlockQuote', 'List', 'Indent', 'IndentBlock']),
-          };
-        } else if(item.classList.contains('editor-xxxlite')) {
-          options = {
-            toolbar: xxxlite_toolbar,
-            removePlugins: img_plugins.concat(table_plugins, headings_plugins,
-              ['BlockQuote', 'List', 'Indent', 'IndentBlock']),
-          };
-        }
-
-        if(item.classList.contains('editor-no-headings')) {
-          options.toolbar = options.toolbar.filter(item => item !== 'heading');
-          options.removePlugins = (options.removePlugins??[]).concat(headings_plugins);
-        }
-
-        // rimozione eventuali separatori all'inizio e alla fine
-        if(options.toolbar[0] === '|') {
-          options.toolbar = options.toolbar.slice(1);
-        }
-        if(options.toolbar.slice(-1) === '|') {
-          options.toolbar = options.toolbar.slice(0, -1);
-        }
-
-        // opzioni link
-        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html
-        options.link = {
-
-          addTargetToExternalLinks: cke_opts.link_auto_ext_target_blank, // target _blank automatico per url esterni
-          decorators: {}
-        };
-
-        if(cke_opts.link_download) {
-          options.link.decorators.toggleDownloadable = {
-            mode: 'manual',
-            label: 'Download',
-            attributes: {
-              download: 'download'
-            }
-          };
-        }
-        if(cke_opts.link_target_blank) {
-          options.link.decorators.openInNewTab = {
-            mode: 'manual',
-            label: 'Apri in nuova finestra',
-            defaultValue: false,
-            attributes: {
-              target: '_blank',
-              rel: 'noopener noreferrer'
-            }
-          };
-        }
-        if(cke_opts.extra_cleaning) {
-          item.classList.add('editor-cleaner');
-        }
-
-        // console.log(options);
-
-        ClassicEditor.create(item, options)
-
-        // .then( editor => {
-        //   /* eslint-disable */
-        //   console.groupCollapsed();
-        //   console.log('textarea',  item );
-        //   console.log('editor',  editor );
-        //   console.log('toolbar elements',Array.from( editor.ui.componentFactory.names() ));
-        //   console.log('plugins', ClassicEditor.build.plugins.map( plugin => plugin.pluginName ));
-        //   console.groupEnd();
-        //   /* eslint-enable */
-        // })
-
+        ClassicEditor.create( dom_element, editor_create_options)
           .then( editor => {
-            if(item.disabled) {
-              editor.isReadOnly = true;
-            }
-            window.ckeditor_instances[item.id ? item.id : idx] = editor;
-
-            // abilita eventuali elementi disabilitati con attributo `data-enable="editor"`
-            document.querySelectorAll('[data-enable="editor"]:disabled').forEach( el => {
-              el.disabled = false;
-              el.closest('.form-group').classList.remove('disabled');
-            });
+            instance_setup(dom_element, editor);
           })
           .catch( error => {
             /* eslint-disable */
-            console.group('textarea ' + idx);
+            console.error(`textarea#${dom_element.id}`);
             console.error(error);
-            console.log('textarea',  item );
-            console.groupEnd();
             /* eslint-enable */
           });
-
-      }); // end forEach
-
+      }); // end foreach
     }; // end onload
 
-    script.src = cke_opts.cke_url;
-    script.type = 'text/javascript';
+    script.src = cke_url;
     document.head.appendChild(script);
+
+
 
   } // end if( editor_list.length
 

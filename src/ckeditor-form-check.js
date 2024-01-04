@@ -1,14 +1,10 @@
 /* global ckeditor_instances */
 
-/*
-  Controlli campi ckeditor
-*/
-
 
 export default function (options) {
 
   const default_options = {
-    selector: 'editor',
+    selectors: ['editor-std', 'editor-full', 'editor-custom'],
     requiredErrorMes: requiredElement => {
       return `L'elemento ${requiredElement} è obbligatorio`;
     },
@@ -19,8 +15,8 @@ export default function (options) {
 
   let cke_opts = Object.assign({}, default_options, options || {}),
 
-    editor_textareas = document.querySelectorAll(`textarea.${cke_opts.selector}`),
-    editors_required = document.querySelectorAll(`textarea.${cke_opts.selector}[required]`);
+    editor_textareas = document.querySelectorAll(cke_opts.selectors.map(i => `textarea.${i}`).join(',')),
+    editors_required = document.querySelectorAll(cke_opts.selectors.map(i => `textarea.${i}[required]`).join(','));
 
 
   // CAMPI REQUIRED
@@ -43,26 +39,31 @@ export default function (options) {
   document.querySelectorAll('form').forEach(_form => {
 
     _form.onsubmit = (e) => {
-      // trimming
+
+      // pulizia
       editor_textareas.forEach(item => {
 
-        if(item.classList.contains('editor-cleaner')) {
+        let editor = ckeditor_instances[item.id],
+          cke_data = editor.getData();
 
-          let editor = ckeditor_instances[item.id],
-            cke_data = editor.getData();
+        cke_data = cke_data
+          .trim()
+          // strong dentro gli header
+          .replace(/(<h\d>)<strong>(.*?)<\/strong>(<\/h\d>) /igm, '$1$2$3')
+          // paragrafi vuoti all'inizio
+          .replace(/^((<p>&nbsp;<\/p>)+)/igm, '')
+          // paragrafi vuoti alla fine
+          .replace(/((<p>&nbsp;<\/p>)+)$/igm, '')
+        ;
+        // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-setData
 
-          cke_data = cke_data
-            .trim()
-            // TODO
-            // .replace(/<p( (.*?))?>\s*(?:<br ?\/?>)*\s*(?:&nbsp;)*\s*(?:<br ?\/?>)*\s*<\/p>/igm, '') // righe vuote
-            // .replace(/\s*(?:<br ?\/?>)*\s*(?:&nbsp;)*\s*(?:<br ?\/?>)*\s*<\/p>/igm, '</p>') // spazi vuoti alla fine dei tag p
-            .replace(/(<h\d>)<strong>(.*?)<\/strong>(<\/h\d>) /igm, '$1$2$3'); // strong dentro gli header
-
-          // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-setData
-          editor.setData( cke_data.trim() );
-          editor.updateSourceElement();
+        if(cke_data.toLowerCase() === '<p>&nbsp;</p>') {
+          cke_data = '';
         }
 
+        editor.setData( cke_data );
+        // editor.updateSourceElement(cke_data);
+        item.value = cke_data;
       });
 
       // required

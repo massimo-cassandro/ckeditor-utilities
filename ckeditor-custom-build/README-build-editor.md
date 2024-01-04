@@ -29,8 +29,6 @@ Per personalizzare CKEditor (ad esempio per cambiare la lingua dell'interfaccia 
 
 Per costruire la build la via più facile è partire da una distribuzione ufficiale (in questo caso la *Classic Build*), modificare la configurazione e creare una nuova build.
 
-> NB: è necessario aggiungere le cartella `/**/ckeditor` all'elenco delle *skipped folders* di Codekit.
-
 
 ### Scaricare il repository tramite npm
 

@@ -1,5 +1,6 @@
-2023-02-17T11:26:50.123Z |      2.3.0 | First version from old package `m-utilities`
-2023-02-20T09:16:58.153Z |      2.3.1 | Package.json fix
+2023-02-17T11:26:50.123Z |            2.3.0 | First version from old package `m-utilities`
+2023-02-20T09:16:58.153Z |            2.3.1 | Package.json fix
 2023-08-23T16:05:48.261Z |            2.3.2 | Fix extra cleaning
 2023-09-01T09:13:17.250Z |            2.3.3 | fix
 2023-12-14T09:45:39.224Z |            2.3.4 | fix
+2024-01-04T16:52:05.629Z |            3.0.0 | Implementazione diversi tipi di editor, cambiamenti nella configurazione

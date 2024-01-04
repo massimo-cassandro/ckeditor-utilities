@@ -1,6 +1,6 @@
 # Integrazione CKEditor 5
 
-versione 2.0 - gen 2020
+versione 2.x - gen 2020
 
 **Integrazione e configurazione di CKEditor.**
 

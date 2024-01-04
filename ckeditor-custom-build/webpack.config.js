@@ -20,7 +20,7 @@ const TerserPlugin = require( 'terser-webpack-plugin' );
 
 module.exports = {
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false, //'source-map',
   performance: {
     hints: false
   },
