@@ -10,8 +10,6 @@
  */
 
 
-/* globals XMLHttpRequest */
-
 // NB: i percorsi dei moduli sono relativi alla cartella node_modules
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';

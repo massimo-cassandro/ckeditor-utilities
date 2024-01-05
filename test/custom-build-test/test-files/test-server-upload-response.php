@@ -27,9 +27,9 @@ e la larghezza dell'immagine:
     "width":1067
   }
 
-L'adapter ADA provede quindi a generare un url che utilizzi il viewer ADA e visualizza l'immagine.
+L'adapter provede quindi a generare un url che utilizzi un viewer backend centralizzato e visualizza l'immagine.
 
-A scopo di demo, l'adapter ada accetta anche un json di questo tipo (utilizzato in questo script):
+A scopo di demo, l'adapter accetta anche un json di questo tipo (utilizzato in questo script):
 
   {
     demo: base_64_string

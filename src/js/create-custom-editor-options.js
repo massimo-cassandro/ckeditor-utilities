@@ -94,13 +94,13 @@ const std_toolbar = [
   headings_plugins = ['Heading'];
 
 
-export function create_custom_editor_options(dom_element, cke_opts) {
+export function create_custom_editor_options(dom_element, loader_opts) {
 
   let options = {
-    uploaderUrl: cke_opts.upl_url,
-    uploadMaxSize : 4 * 1024 * 1024,
-    imgViewer: cke_opts.img_viewer,
-    toolbar: std_toolbar
+    uploaderUrl    : loader_opts.upl_url,
+    uploadMaxSize  : 4 * 1024 * 1024,
+    imgViewer      : loader_opts.img_viewer,
+    toolbar        : std_toolbar
   };
 
   // max size da attributo data
@@ -150,11 +150,11 @@ export function create_custom_editor_options(dom_element, cke_opts) {
   // https://ckeditor.com/docs/ckeditor5/latest/features/link.html
   options.link = {
 
-    addTargetToExternalLinks: cke_opts.link_auto_ext_target_blank, // target _blank automatico per url esterni
+    addTargetToExternalLinks: loader_opts.link_auto_ext_target_blank, // target _blank automatico per url esterni
     decorators: {}
   };
 
-  if(cke_opts.link_download) {
+  if(loader_opts.link_download) {
     options.link.decorators.toggleDownloadable = {
       mode: 'manual',
       label: 'Download',
@@ -163,7 +163,7 @@ export function create_custom_editor_options(dom_element, cke_opts) {
       }
     };
   }
-  if(cke_opts.link_target_blank) {
+  if(loader_opts.link_target_blank) {
     options.link.decorators.openInNewTab = {
       mode: 'manual',
       label: 'Apri in nuova finestra',
