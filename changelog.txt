@@ -8,3 +8,4 @@
 2024-01-05T12:06:33.985Z |            3.0.2 | readme fix
 2024-01-05T14:16:25.615Z |            3.0.3 | Fix
 2024-01-05T14:41:15.233Z |            3.0.4 | ckeditor-form-check regexp fix
+2024-01-05T15:37:18.887Z |            3.0.5 | ckeditor-form-check regexp fix

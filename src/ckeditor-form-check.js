@@ -46,14 +46,16 @@ export default function (options) {
         let editor = ckeditor_instances[item.id],
           cke_data = editor.getData();
 
+        const empty_lines_regexp = '((<p[^>]*>(?:(?:&nbsp;)|(?:<br data-cke-filler="true" ?/?>))</p>)+)';
+
         cke_data = cke_data
           .trim()
           // strong dentro gli header
           .replace(/(<h\d>)<strong>(.*?)<\/strong>(<\/h\d>) /igm, '$1$2$3')
           // paragrafi vuoti all'inizio
-          .replace(/^((<p(?:.*?)>&nbsp;<\/p>)+)/i, '')
+          .replace(new RegExp(`^${empty_lines_regexp}`, 'i'), '')
           // paragrafi vuoti alla fine
-          .replace(/((<p(?:.*?)>&nbsp;<\/p>)+)$/i, '')
+          .replace(new RegExp(`${empty_lines_regexp}$`, 'i'), '')
         ;
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-setData
 
