@@ -51,9 +51,9 @@ export default function (options) {
           // strong dentro gli header
           .replace(/(<h\d>)<strong>(.*?)<\/strong>(<\/h\d>) /igm, '$1$2$3')
           // paragrafi vuoti all'inizio
-          .replace(/^((<p>&nbsp;<\/p>)+)/igm, '')
+          .replace(/^((<p(?:.*?)>&nbsp;<\/p>)+)/i, '')
           // paragrafi vuoti alla fine
-          .replace(/((<p>&nbsp;<\/p>)+)$/igm, '')
+          .replace(/((<p(?:.*?)>&nbsp;<\/p>)+)$/i, '')
         ;
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-setData
 
