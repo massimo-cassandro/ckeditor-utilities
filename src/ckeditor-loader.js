@@ -62,7 +62,7 @@ export default function (loader_options) {
           throw 'Missing selectors';
 
         } else {
-          for(let selector in std_selectors_list) {
+          for(const selector of std_selectors_list) {
             if(document.querySelectorAll(`.${selector}`).length) {
               cke_url = opts.std_selectors[selector];
               break;

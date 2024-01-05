@@ -6,3 +6,4 @@
 2024-01-04T16:52:05.629Z |            3.0.0 | Implementazione diversi tipi di editor, cambiamenti nella configurazione
 2024-01-05T11:50:42.768Z |            3.0.1 | Update
 2024-01-05T12:06:33.985Z |            3.0.2 | readme fix
+2024-01-05T14:16:25.615Z |            3.0.3 | Fix
